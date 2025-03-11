@@ -31,4 +31,4 @@ Visit the Bytepay website and log in to your account. Navigate to Developer Sett
 
 == Support ==
 
-For support, visit: [https://www.bytepay.it/reach-out](https://www.bytepay.it/reach-out)
+For support, visit: [https://www.bytepay.it/contact-us](https://www.bytepay.it/contact-us)

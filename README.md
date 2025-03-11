@@ -137,7 +137,7 @@ The official documentation for this plugin is available at: [https://www.bytepay
 
 ## Support
 
-For customer support, visit: [https://www.bytepay.it/reach-out](https://www.bytepay.it/reach-out)
+For customer support, visit: [https://www.bytepay.it/contact-us](https://www.bytepay.it/contact-us)
 
 ## Why Choose Bytepay Payment Gateway?
 
