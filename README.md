@@ -128,7 +128,7 @@ For any issues or enhancement requests with this plugin, please contact the Byte
 
 ## Documentation
 
-The official documentation for this plugin is available at: [https://www.bytepay.it/api/docs/wordpress-plugin](https://www.bytepay.it/api/docs/wordpress-plugin)
+The official documentation for this plugin is available at: [https://www.bytepay.it/docs/wordpress-plugin](https://www.bytepay.it/docs/wordpress-plugin)
 
 
 ### Version 1.0.0 (Initial Release)
