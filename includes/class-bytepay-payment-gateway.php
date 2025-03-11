@@ -46,7 +46,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 		$this->id = self::ID;
 		$this->icon = ''; // Define an icon URL if needed.
 		$this->method_title = __('BytePay Payment Gateway', 'bytepay-payment-gateway');
-		$this->method_description = __('This plugin allows you to accept payments in USD through a secure payment gateway integration. Customers can complete their payment process with ease and security.', 'bytepay-payment-gateway');
+		$this->method_description = __('This plugin enables you to accept ACH payments securely, allowing customers to complete transactions directly from their bank accounts. It provides a seamless and cost-effective payment solution with enhanced security and convenience.', 'bytepay-payment-gateway');
 
 		// Load the settings
 		$this->bytepay_init_form_fields();
@@ -155,7 +155,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 				'title' => __('Title', 'bytepay-payment-gateway'),
 				'type' => 'text',
 				'description' => __('This controls the title which the user sees during checkout.', 'bytepay-payment-gateway'),
-				'default' => __('ACH Pay BytePay', 'bytepay-payment-gateway'),
+				'default' => __('ACH Direct Debit', 'bytepay-payment-gateway'),
 				'desc_tip' => __('Enter the title of the payment gateway as it will appear to customers during checkout.', 'bytepay-payment-gateway'),
 			),
 			'description' => array(

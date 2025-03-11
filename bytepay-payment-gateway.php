@@ -2,12 +2,12 @@
 
 /**
  * Plugin Name: Bytepay Payment Gateway
- * Description: Secure payment gateway integration allowing USD bank-to-bank transfers.
+ * Description: Secure payment gateway integration allowing bank-to-bank transfers.
  * Author: Bytepay
  * Author URI: https://www.bytepay.it/
  * Text Domain: bytepay-payment-gateway
  * Plugin URI: https://github.com/bytepay-it/bytepay-payment-gateway.git
- * Version: 1.0.1
+ * Version: 1.0.0
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *

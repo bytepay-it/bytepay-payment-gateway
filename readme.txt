@@ -1,17 +1,17 @@
 === Bytepay Payment Gateway ===
 Contributors: Bytepay
-Tags: woocommerce, payment gateway, fiat, Bytepay
+Tags: woocommerce, payment gateway, Bytepay
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 1.0.1
+Stable tag: 1.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-The Bytepay Payment Gateway plugin for WooCommerce 8.9+ allows you to accept fiat payments, including bank-to-bank transfers, to sell products on your WooCommerce store.
+Easily accept ACH Direct Debit payments on your WordPress site with our seamless and secure payment gateway. This plugin enables businesses to process bank-to-bank transactions directly from customer accounts.
 
 == Description ==
 
-This plugin integrates Bytepay Payment Gateway with WooCommerce, enabling you to accept fiat payments,including bank-to-bank transfers. 
+This plugin integrates the Bytepay ACH Payment Gateway with WooCommerce, enabling you to accept secure bank-to-bank transfers With ACH processing, you can reduce transaction fees, streamline payment collection and securely.
 
 == Installation ==
 
@@ -26,7 +26,7 @@ This plugin integrates Bytepay Payment Gateway with WooCommerce, enabling you to
 Visit the Bytepay website and log in to your account. Navigate to Developer Settings to generate or retrieve API keys.
 
 == Changelog ==
-= 1.0.1 =
+= 1.0.0 =
 * Initial release.
 
 == Support ==
