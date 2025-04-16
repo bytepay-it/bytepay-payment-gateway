@@ -68,25 +68,31 @@ class BYTEPAY_PAYMENT_GATEWAY_REST_API
         $api_order_status = isset($parameters['order_status']) ? sanitize_text_field($parameters['order_status']) : '';
         
         // Log incoming request with sanitized parameters
-		$this->logger->info('Bytepay API Request Received: ' . wp_json_encode($parameters, true), array('source' => 'bytepay_payment_gateway'));
+		$this->logger->info('Bytepay API Request Received: ' . wp_json_encode($parameters, true), array('source' => 'bytepay-payment-gateway'));
 
         // Verify API key
 		if (!$this->bytepay_verify_api_key(base64_decode($api_key))) {
-			$this->logger->error('Unauthorized access attempt.', array('source' => 'bytepay_payment_gateway'));
+			$this->logger->error('Unauthorized access attempt.', array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['error' => 'Unauthorized'], 401);
 		}
 
         if ($order_id <= 0) {
-			$this->logger->error('Invalid order ID.', array('source' => 'bytepay_payment_gateway'));
+			$this->logger->error('Invalid order ID.', array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['error' => 'Invalid data'], 400);
 		}
 
         $order = wc_get_order($order_id);
         if (!$order) {
-			$this->logger->error('Order not found: ' . $order_id, array('source' => 'bytepay_payment_gateway'));
+			$this->logger->error('Order not found: ' . $order_id, array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['error' => 'Order not found'], 404);
 		}
-
+		$pay_id = isset($parameters['pay_id']) ? sanitize_text_field($parameters['pay_id']) : '';
+		//Get uuid from WP
+		$payment_token = $order->get_meta('_bytepay_pay_id');
+		if ($payment_token != $pay_id) {
+			$this->logger->error('Pay ID mismatch: ' . $pay_id, array('source' => 'bytepay-payment-gateway'));
+			return new WP_REST_Response(['error' => 'Pay ID mismatch'], 400);
+		}
         if ($api_order_status == 'completed' && in_array($order->get_status(), ['pending', 'failed'])) {
 			// Get the configured order status from the payment gateway settings
 			$gateway_id = 'bytepay';
@@ -95,14 +101,14 @@ class BYTEPAY_PAYMENT_GATEWAY_REST_API
 				$gateway = $payment_gateways[$gateway_id];
 				$order_status = sanitize_text_field($gateway->get_option('order_status', 'processing'));
 			} else {
-				$this->logger->error('Payment gateway not found.', array('source' => 'bytepay_payment_gateway'));
+				$this->logger->error('Payment gateway not found.', array('source' => 'bytepay-payment-gateway'));
 				return new WP_REST_Response(['error' => 'Payment gateway not found'], 500);
 			}
 
 			// Validate the order status against allowed statuses
 			$allowed_statuses = wc_get_order_statuses();
 			if (!array_key_exists('wc-' . esc_html($order_status), $allowed_statuses)) {
-				$this->logger->error('Invalid order status: ' . esc_html($order_status), array('source' => 'bytepay_payment_gateway'));
+				$this->logger->error('Invalid order status: ' . esc_html($order_status), array('source' => 'bytepay-payment-gateway'));
 				return new WP_REST_Response(['error' => 'Invalid order status'], 400);
 			}
 		} else {
@@ -120,10 +126,10 @@ class BYTEPAY_PAYMENT_GATEWAY_REST_API
 
         if ($updated) {
 			$payment_return_url = esc_url($order->get_checkout_order_received_url());
-			$this->logger->info('Order status updated successfully: ' . esc_html($order_id), array('source' => 'bytepay_payment_gateway'));
+			$this->logger->info('Order status updated successfully: ' . esc_html($order_id), array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['success' => true, 'message' => 'Order status updated successfully', 'payment_return_url' => $payment_return_url], 200);
 		} else {
-			$this->logger->error('Failed to update order status: ' . esc_html($order_id), array('source' => 'bytepay_payment_gateway'));
+			$this->logger->error('Failed to update order status: ' . esc_html($order_id), array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['error' => 'Failed to update order status'], 500);
 		}
     }

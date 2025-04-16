@@ -130,6 +130,20 @@ For any issues or enhancement requests with this plugin, please contact the Byte
 
 The official documentation for this plugin is available at: [https://www.bytepay.it/docs/wordpress-plugin](https://www.bytepay.it/docs/wordpress-plugin)
 
+### Version 1.0.1
+
+- **Blank screen issue:**  
+  Fixed an issue where a blank screen appeared when placing an order from the order history page.
+
+- **Special Character Validation Fix**:
+  Improved validation for special characters in specific checkout fields to prevent incorrect form submissions.
+
+- **Unique Payment Token Handling:**  
+  Implemented unique payment token support for orders to prevent duplicate payment processing and ensure more reliable order submissions.
+
+- **Fixed Button Overlap on Checkout Page:** 
+  Resolved an issue where buttons were overlapping on the checkout page, ensuring a smoother and more user-friendly experience.
+
 
 ### Version 1.0.0 (Initial Release)
 

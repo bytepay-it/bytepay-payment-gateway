@@ -274,7 +274,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 		}
 
 		// Rate-limiting configuration
-		$window_size = 30; // 30 seconds
+		$window_size = 100; // 30 seconds
 		$max_requests = 5;  // Max 5 requests in the last 30 seconds
 
 		// Get the current timestamp
@@ -386,7 +386,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 		$order->update_meta_data('_order_origin', 'bytepay_payment_gateway');
 		$order->save();
 
-		wc_get_logger()->info('Bytepay Payment Request: ' . wp_json_encode($data), array('source' => 'bytepay_payment_gateway'));
+		wc_get_logger()->info('Bytepay Payment Request: ' . wp_json_encode($data), array('source' => 'bytepay-payment-gateway'));
 
 		// Send the data to the API
 		$response = wp_remote_post($cleanUrl, array(
@@ -403,7 +403,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 		// Log the essential response data
 		if (is_wp_error($response)) {
 			// Log the error message
-			wc_get_logger()->error('Bytepay Payment Request Error: ' . $response->get_error_message(), array('source' => 'bytepay_payment_gateway'));
+			wc_get_logger()->error('Bytepay Payment Request Error: ' . $response->get_error_message(), array('source' => 'bytepay-payment-gateway'));
 			wc_add_notice(__('Payment error: Unable to process payment.', 'bytepay-payment-gateway') . ' ' . $response->get_error_message(), 'error');
 			return array('result' => 'fail');
 		} else {
@@ -413,7 +413,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 			// Log the response code and body
 			wc_get_logger()->info(
 				sprintf('Bytepay Payment Response: Code: %d, Body: %s', $response_code, $response_body),
-				array('source' => 'bytepay_payment_gateway')
+				array('source' => 'bytepay-payment-gateway')
 			);
 		}
 		$response_data = json_decode($response_body, true);
@@ -450,7 +450,7 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 
 			// Return a success result without redirecting
 			return array(
-				'payment_link' => esc_url($response_data['data']['payment_link']),
+				'redirect' => esc_url($response_data['data']['payment_link']),
 				'result'   => 'success',
 			);
 		} else {
@@ -685,11 +685,77 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 		}
 	}
 
+	function check_for_sql_injection()
+	{
+		$sql_injection_patterns = [
+			'/\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER)\b(?![^{}]*})/i',
+			'/(\-\-|\#|\/\*|\*\/)/i',
+			'/(\b(AND|OR)\b\s*\d+\s*[=<>])/i'
+		];
+	
+		$safe_keys = [
+			'order_comments', 'remarks',
+			'billing_address_1', 'billing_address_2',
+			'billing_city', 'billing_state', 'billing_postcode',
+			'shipping_address_1', 'shipping_address_2',
+			'shipping_city', 'shipping_state', 'shipping_postcode'
+		];
+	
+		$errors = [];
+		$checkout_fields = WC()->checkout()->get_checkout_fields();
+	
+		foreach ($_POST as $key => $value) {
+			// Skip WooCommerce attribution/session tracking fields
+			if (strpos($key, 'wc_order_attribution_') === 0) {
+				continue;
+			}
+	
+			// Skip safe fields
+			if (in_array($key, $safe_keys)) {
+				continue;
+			}
+	
+			if (is_string($value)) {
+				foreach ($sql_injection_patterns as $pattern) {
+					if (preg_match($pattern, $value)) {
+						$field_label = isset($checkout_fields['billing'][$key]['label'])
+							? $checkout_fields['billing'][$key]['label']
+							: (isset($checkout_fields['shipping'][$key]['label'])
+								? $checkout_fields['shipping'][$key]['label']
+								: (isset($checkout_fields['account'][$key]['label'])
+									? $checkout_fields['account'][$key]['label']
+									: (isset($checkout_fields['order'][$key]['label'])
+										? $checkout_fields['order'][$key]['label']
+										: ucfirst(str_replace('_', ' ', $key)))));
+	
+						$errors[] = __("Please remove special characters and enter a valid '$field_label'", 'bytepay-payment-gateway');
+	
+						break;
+					}
+				}
+			}
+		}
+	
+		if (!empty($errors)) {
+			foreach ($errors as $error) {
+				wc_add_notice($error, 'error');
+			}
+			return false;
+		}
+	
+		return true;
+	}
+
 	/**
 	 * Validate the payment form.
 	 */
 	public function validate_fields()
 	{
+		// Check for SQL injection attempts
+		if (!$this->check_for_sql_injection()) {
+			return false;
+		}
+		
 		// Check if the consent checkbox setting is enabled
 		if ($this->get_option('show_consent_checkbox') === 'yes') {
 
