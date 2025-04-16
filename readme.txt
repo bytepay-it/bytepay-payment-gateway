@@ -34,6 +34,13 @@ Visit the Bytepay website and log in to your account. Navigate to Developer Sett
 = 1.0.0 =
 * Initial release.
 
+
+== Upgrade Notice ==
+
+= 1.0.1 =
+* Implemented unique payment token handling for orders to prevent duplicate payment processing and enhance order reliability.
+* Resolved blank screen issue and special characters validation issue.
+
 == Support ==
 
 For support, visit: [https://www.bytepay.it/contact-us](https://www.bytepay.it/contact-us)
