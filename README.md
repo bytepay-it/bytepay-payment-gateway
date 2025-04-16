@@ -8,7 +8,7 @@ Easily accept ACH Direct Debit payments on your WordPress site with our seamless
 **Tags:** woocommerce, payment gateway, Bytepay  
 **Requires at least:** 6.2  
 **Tested up to:** 6.2  
-**Stable tag:** 1.0.0  
+**Stable tag:** 1.0.1  
 **License:** GPLv3 or later  
 **License URI:** [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html)
 
