@@ -71,7 +71,7 @@ jQuery(function ($) {
 	  }
   
 	  // Disable the submit button immediately to prevent further clicks
-	  $button = $form.find('button[type="submit"]');
+	  $button = $form.find('button[type="submit"] [name="woocommerce_checkout_place_order"]');
 	  originalButtonText = $button.text();
 	  $button.prop('disabled', true).text('Processing...');
 	  
@@ -140,7 +140,9 @@ jQuery(function ($) {
 					if (response.success === true) {
 						clearInterval(paymentStatusInterval);
 						clearInterval(popupInterval);
-						window.location.href = response.data.redirect_url;
+						if (response.data && response.data.redirect_url) {
+							window.location.href = response.data.redirect_url;
+						}	
 					  }
 					  isPollingActive = false; // Reset polling active flag after completion
 				},
@@ -195,7 +197,7 @@ jQuery(function ($) {
 	  try {
 		if (response.result === 'success') {
 		  orderId = response.order_id;
-		  var paymentLink = response.payment_link;
+		  var paymentLink = response.redirect;
 		  openPaymentLink(paymentLink);
 		  $form.removeAttr('data-result');
 		  $form.removeAttr('data-redirect-url');

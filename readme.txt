@@ -3,7 +3,7 @@ Contributors: Bytepay
 Tags: woocommerce, payment gateway, Bytepay
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,8 +26,20 @@ This plugin integrates the Bytepay ACH Payment Gateway with WooCommerce, enablin
 Visit the Bytepay website and log in to your account. Navigate to Developer Settings to generate or retrieve API keys.
 
 == Changelog ==
+
+= 1.0.1 =
+* Implemented unique payment token handling for orders to prevent duplicate payment processing and enhance order reliability.
+* Resolved blank screen issue and special characters validation issue.
+
 = 1.0.0 =
 * Initial release.
+
+
+== Upgrade Notice ==
+
+= 1.0.1 =
+* Implemented unique payment token handling for orders to prevent duplicate payment processing and enhance order reliability.
+* Resolved blank screen issue and special characters validation issue.
 
 == Support ==
 
