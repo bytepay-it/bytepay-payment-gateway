@@ -51,6 +51,8 @@ class BYTEPAY_PAYMENT_GATEWAY_Loader
 		add_action('wp_ajax_nopriv_popup_closed_event', array($this, 'bytepay_handle_popup_close'));
 
 		register_activation_hook(BYTEPAY_PAYMENT_GATEWAY_FILE, 'bytepay_activation_check');
+
+		register_deactivation_hook(BYTEPAY_PAYMENT_GATEWAY_FILE, 'bytepay_plugin_deactivation');
     }
 
     /**
@@ -78,6 +80,30 @@ class BYTEPAY_PAYMENT_GATEWAY_Loader
 
         // Add plugin row meta
         add_filter('plugin_row_meta', [$this, 'bytepay_plugin_row_meta'], 10, 2);
+
+		 // Register custom status
+	    register_post_status('wc-ach-in-process', [
+	        'label'                     => _x('ACH in Process', 'Order status', 'bytepay-payment-gateway'),
+	        'public'                    => true,
+	        'exclude_from_search'       => false,
+	        'show_in_admin_all_list'    => true,
+	        'show_in_admin_status_list' => true,
+	        'label_count'               => _n_noop('ACH in Process <span class="count">(%s)</span>', 'ACH in Process <span class="count">(%s)</span>', 'bytepay-payment-gateway'),
+	    ]);
+
+	    // Add custom status to the WooCommerce dropdown/order filters
+	    add_filter('wc_order_statuses', function ($order_statuses) {
+	        $new_statuses = [];
+	        foreach ($order_statuses as $key => $label) {
+	            $new_statuses[$key] = $label;
+
+	            // Inject your custom status after 'on-hold'
+	            if ('wc-on-hold' === $key) {
+	                $new_statuses['wc-ach-in-process'] = _x('ACH in Process', 'Order status', 'bytepay-payment-gateway');
+	            }
+	        }
+	        return $new_statuses;
+	    });
     }
 
     /**

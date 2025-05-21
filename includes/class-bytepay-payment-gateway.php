@@ -223,9 +223,10 @@ class BYTEPAY_PAYMENT_GATEWAY extends WC_Payment_Gateway_CC
 				'desc_tip' => true,
 				'id' => 'order_status_select', // Add an ID for targeting
 				'options' => array(
-					// '' => __('Select order status', 'bytepay-payment-gateway'), // Placeholder option
 					'processing' => __('Processing', 'bytepay-payment-gateway'),
 					'completed' => __('Completed', 'bytepay-payment-gateway'),
+					'ach-in-process'  => __('ACH in Process', 'bytepay-payment-gateway'),
+        			'on-hold'         => __('On Hold', 'bytepay-payment-gateway'),
 				),
 			),
 			'show_consent_checkbox' => array(
