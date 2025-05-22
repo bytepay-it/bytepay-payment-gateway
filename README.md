@@ -8,7 +8,7 @@ Easily accept ACH Direct Debit payments on your WordPress site with our seamless
 **Tags:** woocommerce, payment gateway, Bytepay  
 **Requires at least:** 6.2  
 **Tested up to:** 6.2  
-**Stable tag:** 1.0.1  
+**Stable tag:** 1.0.2  
 **License:** GPLv3 or later  
 **License URI:** [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html)
 
@@ -129,6 +129,10 @@ For any issues or enhancement requests with this plugin, please contact the Byte
 ## Documentation
 
 The official documentation for this plugin is available at: [https://www.bytepay.it/docs/wordpress-plugin](https://www.bytepay.it/docs/wordpress-plugin)
+
+### Version 1.0.2
+
+- **New Order Statuses:** Added `ACH In Process` and `On Hold` to support more accurate tracking of order states.
 
 ### Version 1.0.1
 
