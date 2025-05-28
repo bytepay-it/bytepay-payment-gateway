@@ -93,7 +93,8 @@ class BYTEPAY_PAYMENT_GATEWAY_REST_API
 			$this->logger->error('Pay ID mismatch: ' . $pay_id, array('source' => 'bytepay-payment-gateway'));
 			return new WP_REST_Response(['error' => 'Pay ID mismatch'], 400);
 		}
-        if ($api_order_status == 'completed' && in_array($order->get_status(), ['pending', 'failed'])) {
+
+		if (($api_order_status == 'processing' || $api_order_status == 'completed') && in_array($order->get_status(), ['pending', 'failed'])) {
 			// Get the configured order status from the payment gateway settings
 			$gateway_id = 'bytepay';
 			$payment_gateways = WC()->payment_gateways->payment_gateways();
@@ -115,8 +116,8 @@ class BYTEPAY_PAYMENT_GATEWAY_REST_API
 			$order_status = $order->get_status();
 		}
 
-        // Update order status
-        $updated = $order->update_status($order_status, __('Order status updated via API', 'bytepay-payment-gateway'));
+	    // Update order status
+        $updated = $order->update_status($order_status, __('Order status updated via API.', 'bytepay-payment-gateway'));
 
         // Clear the WooCommerce cart if needed
         if (WC()->cart) {

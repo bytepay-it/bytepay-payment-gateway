@@ -64,3 +64,22 @@ function bytepay_activation_check()
 		wp_die(esc_html($environment_warning)); // Escape the output before calling wp_die
 	}
 }
+
+function bytepay_plugin_deactivation() {
+    // Get all orders with custom status
+    $args = [
+        'status' => 'ach-in-process',
+        'limit'  => -1,
+        'return' => 'ids',
+    ];
+
+    $orders = wc_get_orders($args);
+
+    foreach ($orders as $order_id) {
+        $order = wc_get_order($order_id);
+        if ($order && $order->get_status() === 'ach-in-process') {
+            $order->update_status('on-hold', __('This order was updated due to changes in the ACH payment method settings.', 'bytepay-payment-gateway')
+);
+        }
+    }
+}

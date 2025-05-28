@@ -3,7 +3,7 @@ Contributors: Bytepay
 Tags: woocommerce, payment gateway, Bytepay
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,11 @@ Visit the Bytepay website and log in to your account. Navigate to Developer Sett
 
 == Changelog ==
 
+== Changelog ==
+
+= 1.0.2 =
+* New Order Statuses: Added `ACH In Process` and `On Hold` to support more accurate tracking of order states.
+
 = 1.0.1 =
 * Implemented unique payment token handling for orders to prevent duplicate payment processing and enhance order reliability.
 * Resolved blank screen issue and special characters validation issue.
@@ -36,6 +41,11 @@ Visit the Bytepay website and log in to your account. Navigate to Developer Sett
 
 
 == Upgrade Notice ==
+
+== Upgrade Notice ==
+
+= 1.0.2 =
+Adds support for new order statuses `ACH In Process` and `On Hold`. Upgrade recommended for improved order tracking and compatibility with ACH payments.
 
 = 1.0.1 =
 * Implemented unique payment token handling for orders to prevent duplicate payment processing and enhance order reliability.
